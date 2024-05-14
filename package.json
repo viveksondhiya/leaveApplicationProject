@@ -1,0 +1,30 @@
+{
+  "name": "leaveapplication",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint"
+  },
+  "dependencies": {
+    "axios": "^1.6.8",
+    "bcrypt": "^5.1.1",
+    "bootstrap": "^5.3.3",
+    "crypto": "^1.0.1",
+    "dotenv": "^16.4.5",
+    "jsonwebtoken": "^8.5.1",
+    "mysql2": "^3.9.7",
+    "net": "^1.0.2",
+    "next": "14.2.3",
+    "next-auth": "^4.24.7",
+    "nodemailer": "^6.9.13",
+    "react": "^18.3.1",
+    "react-bootstrap": "^2.10.2",
+    "react-dom": "^18.3.1",
+    "react-router-dom": "^6.23.1",
+    "tailwindcss": "^3.4.3",
+    "tls": "^0.0.1"
+  }
+}
