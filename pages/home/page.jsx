@@ -434,9 +434,11 @@
 import { useState, useEffect } from "react";
 import { useRouter } from "next/router";
 import { verifyToken } from "../../lib/auth";
+import jwt from 'jsonwebtoken';
 
 export default function HomePage() {
   const router = useRouter();
+  const secret_key = 'authenticate';
   const [loggedIn, setLoggedIn] = useState(true);
   const [userRole, setUserRole] = useState(null); // State to store user role
   const [userData, setUserData] = useState(null);
@@ -487,6 +489,7 @@ export default function HomePage() {
           message: "",
           username: userData.username,
         });
+        await 
         console.log("home email sent");
       } else {
         alert("Email has not Sent ");
@@ -496,11 +499,23 @@ export default function HomePage() {
       console.error("Error sending email:", error);
     }
   };
-
+  useEffect(() => { 
+    const token = localStorage.getItem("token");
+    // Decoding the token
+    const decodedToken = jwt.verify(token, secret_key);
+    // Accessing the email from the decoded token payload
+    const userEmail = decodedToken.email;
+   // console.log("token email",userEmail)
+    if (userEmail) {
+      setEmail(userEmail);
+    }
+  }, []);
   useEffect(() => {
     // Fetch user role based on email
     const token = localStorage.getItem("token");
-    const storedEmail = localStorage.getItem("email");
+    const decodedToken = jwt.verify(token, secret_key); 
+    const storedEmail = decodedToken.email;
+    //console.log("effect eamil",storedEmail)
     if (!token) {
       router.push("/login/page");
     } else {
@@ -515,7 +530,7 @@ export default function HomePage() {
 
   // Function to fetch user role
   const fetchUserRole = async (email) => {
-    //console.log("inside fetch userole");
+    // console.log("inside fetch userole");
     try {
       const response = await fetch("/api/users/getRole", {
         method: "POST",
@@ -525,7 +540,7 @@ export default function HomePage() {
         body: JSON.stringify({ email }),
       });
       const data = await response.json();
-      console.log("home data role:", data.user);
+     // console.log("home data role:", data.user);
       setUserData(data.user);
       setEmail(data.user.email);
       setUsername(data.user.username);

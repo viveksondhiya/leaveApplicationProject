@@ -1,18 +1,22 @@
 import { useState, useEffect } from "react";
 import { useRouter } from "next/router";
+import jwt from 'jsonwebtoken';
 
 export default function EmailData() {
   const router = useRouter();
-  const[dummyEmailList,setDummtEmailLIst]=useState([]);
   const [emailList, setEmailList] = useState([]);
   const [loading, setLoading] = useState(true);
   const [email, setEmail] = useState("");
-
-  useEffect(() => {
-    // Fetch email list when the component mounts
-    const storedEmail = localStorage.getItem("email");
-    if (storedEmail) {
-      setEmail(storedEmail);
+  const secret_key = "authenticate";
+  
+  useEffect(() => { 
+    const token = localStorage.getItem("token");
+    // Decoding the token
+    const decodedToken = jwt.verify(token, secret_key);
+    const userEmail = decodedToken.email;
+   // console.log("token email",userEmail)
+    if (userEmail) {
+      setEmail(userEmail);
     }
   }, []);
 
@@ -20,12 +24,12 @@ export default function EmailData() {
     if (email) {
       fetchEmailList(email);
     }
-  },   [email]); 
+  }, [email]);
 
   const fetchEmailList = async () => {
-  //  const email = "user1@example.com";
-   // const email = "test@gmail.com";
-   //console.log("use state email", email)
+    //  const email = "user1@example.com";
+    // const email = "test@gmail.com";
+   // console.log("use state email", email)
     try {
       const response = await fetch("/api/email/emailList", {
         method: "POST",
@@ -36,26 +40,28 @@ export default function EmailData() {
       });
       const data = await response.json();
 
-      console.log("email data list ", data);
-      const processedData = data.map(email => ({
+     // console.log("email data list ", data);
+      const processedData = data.map((email) => ({
         ...email,
-        email_date: email.email_date.split('T')[0] // Extract only the date part
+        email_date: email.email_date.split("T")[0], // Extract only the date part
       }));
-      console.log("email procesed data list ", processedData);
-  
+     // console.log("email procesed data list ", processedData);
+
       setEmailList(processedData);
- 
-       setLoading(false); // Set loading to false after data is fetched
+
+      setLoading(false); // Set loading to false after data is fetched
     } catch (error) {
       console.error("Error fetching email list:", error);
-       setLoading(false); // Set loading to false in case of error
+      setLoading(false); // Set loading to false in case of error
     }
   };
   function handleViewClick(emailDate, sender) {
-    console.log("handle email data click",emailDate ,sender);
+    console.log("emaildata email list ", emailList);
+
+    console.log("handle email data click", emailDate);
     router.push({
       pathname: "/email/emailDescription",
-      query: { date: emailDate, email: email },
+      query: { emailDate: emailDate, sender: sender },
     });
   }
   function handleLogout() {
@@ -119,7 +125,7 @@ export default function EmailData() {
           </thead>
           <tbody>
             {emailList.map((email) => (
-              <tr key={email.uid}>
+              <tr key={email.id}>
                 <td style={{ border: "1px solid #dddddd", padding: "8px" }}>
                   {email.subject}
                 </td>
@@ -130,7 +136,11 @@ export default function EmailData() {
                   {email.status}
                 </td>
                 <td style={{ border: "2px solid #dddddd", padding: "8px" }}>
-                <button onClick={() => handleViewClick(email.email_date, email.sender)}>
+                  <button
+                    onClick={() =>
+                      handleViewClick(email.email_date, email.sender)
+                    }
+                  >
                     {" "}
                     View
                   </button>

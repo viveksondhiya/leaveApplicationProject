@@ -10,19 +10,24 @@ export default function EmailDescription() {
     // Fetch email description when the component mounts
     fetchEmailDescription();
   }, []);
+  useEffect(() => {
+    console.log("emailDescription", emailDescription);
+  }, [emailDescription]);
+  
 
   const fetchEmailDescription = async () => {
-    const { query } = router;
-   const email = query?.email;
-    const date = query?.date;
-      // const email = 'viveks@indiratrade.com';
-      // const date = '2024-05-14 16:03:35';
+  //   const { query } = router;
+  //  const email = query?.sender;
+  //  const date = query?.emailDate;
+  // console.log("query parameters " ,router.query)
+      const email = 'viveks@indiratrade.com';
+      const date = '2024-05-14 16:03:35';
     console.log("email and date ",email, date)
 
-    // if (!email || !date) {
-    //   console.error("Email or date not provided");
-    //   return;
-    // }
+    if (!email || !date) {
+      console.error("Email or date not provided");
+      return;
+    }
 
     try {
       // Make an API call to fetch email description based on the date and email
@@ -45,7 +50,7 @@ export default function EmailDescription() {
         message: data.message,
         date: data.email_date // Ensure only the date part is used
       });
-      console.log("emaildescription ",emailDescription)
+     // console.log("emaildescription ", emailDescription)
       setLoading(false); // Set loading to false after data is fetched
     } catch (error) {
       console.error("Error fetching email description:", error);
@@ -54,9 +59,9 @@ export default function EmailDescription() {
   };
   function handleLogout() {
     // Clear the token from local storage
-    // localStorage.removeItem("token");
-    // setLoggedIn(false);
-    // router.push("/login/page"); // Redirect to the login page
+    localStorage.removeItem("token");
+    setLoggedIn(false);
+    router.push("/login/page"); // Redirect to the login page
   }
 
 

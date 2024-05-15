@@ -2,12 +2,12 @@
 import emailDescriptionModel from "./emailDescriptionModel";
 
 export default async function handler(req, res) {
-    console.log("inside emaildescription route")
+    console.log("inside emaildescription route", req.body.email)
     try {
         const{email,date}=req.body;
         // Fetch all users with the role "admin"
         const emailDescription = await emailDescriptionModel.getEmailDescription (email,date);
-      //  console.log("email-description" ,emailDescription)
+         console.log("email-description" ,emailDescription)
         if (emailDescription.length > 0) {
           return res.status(200).json(emailDescription);
         } else {

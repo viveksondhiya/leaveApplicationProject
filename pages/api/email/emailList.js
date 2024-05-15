@@ -1,5 +1,3 @@
-// Inside your handler function in login.js or wherever appropriate
-import leaveStatusModel from "./leaveStatusModel";
 import emailDescriptionModel from "./emailDescriptionModel";
 
 export default async function handler(req, res) {
