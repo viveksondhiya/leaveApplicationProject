@@ -97,7 +97,7 @@ export default async function POST(req, res) {
 
     // Send the email
     const status = await transporter.sendMail(mailOptions);
-    console.log("inside sendEmail", status);
+    //console.log("inside sendEmail", status);
     let responseVariable;
 
     if (status.response.includes("OK")) {

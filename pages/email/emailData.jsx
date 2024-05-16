@@ -4,17 +4,18 @@ import jwt from 'jsonwebtoken';
 
 export default function EmailData() {
   const router = useRouter();
+  const [loggedIn, setLoggedIn] = useState(true);
   const [emailList, setEmailList] = useState([]);
   const [loading, setLoading] = useState(true);
   const [email, setEmail] = useState("");
+  const [date, setDate] = useState("");
   const secret_key = "authenticate";
   
   useEffect(() => { 
     const token = localStorage.getItem("token");
-    // Decoding the token
     const decodedToken = jwt.verify(token, secret_key);
     const userEmail = decodedToken.email;
-   // console.log("token email",userEmail)
+   
     if (userEmail) {
       setEmail(userEmail);
     }
@@ -27,9 +28,6 @@ export default function EmailData() {
   }, [email]);
 
   const fetchEmailList = async () => {
-    //  const email = "user1@example.com";
-    // const email = "test@gmail.com";
-   // console.log("use state email", email)
     try {
       const response = await fetch("/api/email/emailList", {
         method: "POST",
@@ -40,14 +38,15 @@ export default function EmailData() {
       });
       const data = await response.json();
 
-     // console.log("email data list ", data);
-      const processedData = data.map((email) => ({
-        ...email,
-        email_date: email.email_date.split("T")[0], // Extract only the date part
-      }));
-     // console.log("email procesed data list ", processedData);
+     console.log("email data list ", data);
+     
+    //   const processedData = data.map((email) => ({
+    //     ...email,
+    //     email_date: email.email_date.split("T")[0], // Extract only the date part
+    //   }));
+    // // console.log("email procesed data list ", processedData);
 
-      setEmailList(processedData);
+      setEmailList(data);
 
       setLoading(false); // Set loading to false after data is fetched
     } catch (error) {
@@ -55,27 +54,35 @@ export default function EmailData() {
       setLoading(false); // Set loading to false in case of error
     }
   };
-  function handleViewClick(emailDate, sender) {
-    console.log("emaildata email list ", emailList);
 
-    console.log("handle email data click", emailDate);
+  function handleViewClick(emailDate, sender) {
+   // console.log("handle email data click", emailDate);
+  
     router.push({
       pathname: "/email/emailDescription",
-      query: { emailDate: emailDate, sender: sender },
+      query: { emailDate, sender },
     });
   }
   function handleLogout() {
     // Clear the token from local storage
     localStorage.removeItem("token");
-
     setLoggedIn(false);
     router.push("/login/page"); // Redirect to the login page
   }
+
+  function handleHome() {
+    // Clear the token from local storage
+    router.push("/home/page"); // Redirect to the login page
+  }
+
   return (
     <div className="flex flex-col items-center justify-center min-h-screen">
       <div className="navbar">
         <h1>User Dashboard</h1>
         <button onClick={handleLogout}>Logout</button>
+      </div>
+      <div className="backHome">
+      <button onClick={handleHome}> ← Back To Home</button>
       </div>
       <div style={{ margin: "20px" }}>
         <table style={{ width: "100%", backgroundColor: "white" }}>
@@ -130,7 +137,7 @@ export default function EmailData() {
                   {email.subject}
                 </td>
                 <td style={{ border: "1px solid #dddddd", padding: "8px" }}>
-                  {email.email_date}
+                {new Date(email.email_date).toLocaleDateString()}
                 </td>
                 <td style={{ border: "1px solid #dddddd", padding: "8px" }}>
                   {email.status}
@@ -138,10 +145,9 @@ export default function EmailData() {
                 <td style={{ border: "2px solid #dddddd", padding: "8px" }}>
                   <button
                     onClick={() =>
-                      handleViewClick(email.email_date, email.sender)
+                      handleViewClick(email.email_date, email.sender)            
                     }
                   >
-                    {" "}
                     View
                   </button>
                 </td>
