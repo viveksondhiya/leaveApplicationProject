@@ -14,7 +14,7 @@ export default function EmailData() {
   useEffect(() => { 
     const token = localStorage.getItem("token");
     const decodedToken = jwt.verify(token, secret_key);
-    const userEmail = decodedToken.email;
+    const userEmail = decodedToken.email; 
    
     if (userEmail) {
       setEmail(userEmail);
@@ -34,7 +34,7 @@ export default function EmailData() {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({email}),
+        body: JSON.stringify(email),
       });
       const data = await response.json();
 

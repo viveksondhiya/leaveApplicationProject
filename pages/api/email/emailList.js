@@ -3,11 +3,11 @@ import emailDescriptionModel from "./emailDescriptionModel";
 export default async function handler(req, res) {
 
     try {
-        const{email}=req.body;
-      //  console.log("email/emaillist ",   email)
+        const email=req.body;
+         console.log("email/emaillist ",   email)
         // Fetch all users with the role "admin"
         const emailList = await emailDescriptionModel.getEmailList (email);
-       // console.log("email-list" ,emailList)
+        // console.log("email-list" ,emailList)
         if (emailList.length > 0) {
           return res.status(200).json(emailList);
         } else {

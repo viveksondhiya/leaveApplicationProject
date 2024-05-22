@@ -2,13 +2,13 @@
 import emailDescriptionModel from "./emailDescriptionModel";
 
 export default async function handler(req, res) {
-    console.log("inside emaildata route")
+    // console.log("inside emaildata route")
     try {
         const{response}=req.body;
  
         if(response===OK){
             const emailDataback = await emailDescriptionModel.postEmailData(response);
-            console.log("emaildata ok",emailDataback)
+            // console.log("emaildata ok",emailDataback)
         }else{
             console.log("email data is not upadated ");
             return res.status(404).json({ message: "email data is not upadated"});

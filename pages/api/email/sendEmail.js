@@ -12,7 +12,7 @@ export default async function POST(req, res) {
     const dynamicCc = req.body.formData.cc;
     const dynamicSubject = req.body.formData.subject;
     const dynamicMessage = req.body.formData.message;
-    const dynamicdate = req.body.formData.email_date;
+    // const dynamicdate = req.body.formData.email_date;
 
     // Create a Nodemailer transporter
     const transporter = nodemailer.createTransport({
@@ -35,7 +35,7 @@ export default async function POST(req, res) {
       // html: dynamicMessage,
       html: `
             <p>${dynamicMessage}</p>
-            <a href="http://yourwebsite.com/updateStatus?email=${encodeURIComponent(staticEmail)}&date=${encodeURIComponent(dynamicdate)}&status=approved">
+            <a href="http://yourwebsite.com/updateStatus?email=${encodeURIComponent(staticEmail)}&status=approved">
             <button style="background-color: #4CAF50; /* Green */
                             border: none;
                             color: white;
@@ -50,24 +50,8 @@ export default async function POST(req, res) {
             </button>
         </a>
         
-        <a href="http://yourwebsite.com/updateStatus?email=${encodeURIComponent(staticEmail)}&date=${encodeURIComponent(dynamicdate)}&status=rejected">
-            <<a href="http://yourwebsite.com/updateStatus?email=${encodeURIComponent(staticEmail)}&date=${encodeURIComponent(dynamicDate)}&status=approved">
-            <button id="approveButton" style="background-color: #4CAF50; /* Green */
-                            border: none;
-                            color: white;
-                            padding: 15px 32px;
-                            text-align: center;
-                            text-decoration: none;
-                            display: inline-block;
-                            font-size: 16px;
-                            margin: 4px 2px;
-                            cursor: pointer;">
-                Approve
-            </button>
-        </a>
-        
-        <a href="http://yourwebsite.com/updateStatus?email=${encodeURIComponent(staticEmail)}&date=${encodeURIComponent(dynamicDate)}&status=rejected">
-            <button id="rejectButton" style="background-color: #f44336; /* Red */
+        <a href="http://yourwebsite.com/updateStatus?email=${encodeURIComponent(staticEmail)}&status=rejected">
+            <button style="background-color: #f44336; /* Red */
                             border: none;
                             color: white;
                             padding: 15px 32px;
@@ -80,18 +64,6 @@ export default async function POST(req, res) {
                 Reject
             </button>
         </a>
-        
-        <script>
-            document.getElementById("approveButton").addEventListener("click", function() {
-                alert("Status updated to Approved!");
-            });
-        
-            document.getElementById("rejectButton").addEventListener("click", function() {
-                alert("Status updated to Rejected!");
-            });
-        </script>
-        
-        
         `,
     };
 

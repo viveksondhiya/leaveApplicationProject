@@ -14,13 +14,13 @@ export default async function handler(req, res) {
     ).padStart(2, "0")}:${String(dateObject.getSeconds()).padStart(2, "0")}`;
 
  
-     console.log("email and date route ", req.body.email, formattedDate);
+    //  console.log("email and date route ", req.body.email, formattedDate);
     try {
          const email=req.body.email;
          const date=formattedDate;
         // Fetch all users with the role "admin"
         const emailDescription = await emailDescriptionModel.getEmailDescription (email,date);
-      console.log("email-description handler" ,emailDescription)
+      //console.log("email-description handler" ,emailDescription)
         if (emailDescription.length > 0) {
           return res.status(200).json(emailDescription);
         } else {
