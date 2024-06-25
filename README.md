@@ -1,3 +1,15 @@
+Key Points of The Projects
+User Management and Leave Application System. <br>
+ Designed and implemented a secure login and registration system using (JWT) for user authentication. <br>
+ Implemented role-based access control to manage user permissions and ensure secure access to features. <br>
+ Developed a system for users and admins to submit and manage leave applications and user view sent mails.<br> 
+Created API endpoints for user authentication, leave application submission, and user profile management. <br>
+Technology used: Next.js, React, Node.js, Express, JSON Web Tokens (JWT), MySql
+
+
+
+
+
 This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
 ## Getting Started
